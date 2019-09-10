@@ -15,6 +15,8 @@ CMD [ "npm", "start" ]
 
 Example docker-compose.yml:
 
+*Paths should be relative to base traefikture path
+
 ```
 version: "3"
 services:

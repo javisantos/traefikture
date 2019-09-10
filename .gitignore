@@ -1,0 +1,9 @@
+.env
+acme/acme.json
+certs/*
+services/*
+routes/*
+!acme/README.md
+!services/README.md
+!services/static
+!routes/README.md

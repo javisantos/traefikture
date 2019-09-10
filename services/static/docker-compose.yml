@@ -1,0 +1,14 @@
+version: "3"
+services:
+  static:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/static
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./services/static/public:/app/public
+    networks:
+      - web
+    labels:
+      - traefik.backend=static

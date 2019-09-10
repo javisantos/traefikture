@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik
+    container_name: "traefik"
+    command: --api --docker --insecureSkipVerify
+      --defaultentrypoints=http,https
+      --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
+      --entryPoints='Name:https Address::443 TLS'
+      --logLevel=${LOGLEVEL}
+      --docker.watch
+      --docker.exposedbydefault=false
+      --sendAnonymousUsage=false
+      --file.directory="/routes"
+      --file.watch=true
+      --acme
+      --acme.tlschallenge=true
+      --acme.entrypoint=https
+      --acme.storage=/etc/traefik/acme/acme.json
+      --acme.onhostrule=${ACME_ONHOSTRULE}
+      --acme.email=${ACME_EMAIL}
+      --acme.caserver="${ACME_CASERVER}"
+      --api.dashboard=true
+    networks:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs/:/certs/
+      - ./routes/:/routes/
+      - ./acme:/etc/traefik/acme
+  
+  certdumper:
+    image: ldez/traefik-certs-dumper:latest
+    container_name: "certdumper"
+    command: file --source /acme/acme.json --dest /certs --domain-subdir --crt-ext=.pem --key-ext=.pem
+    volumes: 
+      - ./certs:/certs
+      - ./acme/:/acme
+
+networks:
+  web:
+    external: true

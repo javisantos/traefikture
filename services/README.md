@@ -13,7 +13,7 @@ RUN npm install
 CMD [ "npm", "start" ]
 ```
 
-Example compose.yml:
+Example docker-compose.yml:
 
 ```
 version: "3"

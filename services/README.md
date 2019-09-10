@@ -1,5 +1,5 @@
 Services here
-with his compose.yml and Dockerfile
+with his docker-compose.yml and Dockerfile
 
 Example Dockerfile for a node/express application:
 
